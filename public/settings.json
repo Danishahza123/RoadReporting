@@ -1,0 +1,6 @@
+{
+  "app_name": "Road Report System",
+  "api_base": "http://127.0.0.1:8000/api",
+  "theme": "dark",
+  "version": "1.0.0"
+}

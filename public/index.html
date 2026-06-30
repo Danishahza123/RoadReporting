@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Road Report System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+
+  <!-- YOUR SDK (KEEP IF USING BACKEND) -->
+  <script src="data_sdk.js"></script>
+  <script src="app.js"></script>
+
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginModal" class="login-modal">
+  <div class="login-box">
+
+    <div class="login-logo">
+      <div class="login-avatar">
+        <i data-lucide="map-pin"></i>
+      </div>
+      <h2>Road Report</h2>
+      <p>Road Issue Reporting System</p>
+    </div>
+
+    <div class="tab-toggle">
+      <button class="tab-btn active" id="tab-login-btn" onclick="showLogin()">Login</button>
+      <button class="tab-btn" id="tab-register-btn" onclick="showRegister()">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <p class="login-form-title">Welcome back</p>
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <i data-lucide="mail" class="input-icon"></i>
+          <input id="email" type="email" placeholder="you@example.com" class="form-input with-icon">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i data-lucide="lock" class="input-icon"></i>
+          <input id="password" type="password" placeholder="••••••••" class="form-input with-icon">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="login()">Sign In</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" class="hidden">
+      <p class="login-form-title">Create account</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <div class="input-wrap">
+          <i data-lucide="user" class="input-icon"></i>
+          <input id="regName" placeholder="Your full name" class="form-input with-icon">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <i data-lucide="mail" class="input-icon"></i>
+          <input id="regEmail" type="email" placeholder="you@example.com" class="form-input with-icon">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i data-lucide="lock" class="input-icon"></i>
+          <input id="regPassword" type="password" placeholder="••••••••" class="form-input with-icon">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="register()">Create Account</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="app-layout hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">
+          <i data-lucide="user"></i>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+      <p class="profile-welcome">WELCOME</p>
+      <p class="profile-name" id="user-display-name">User</p>
+      <p class="profile-role" id="user-display-role">Member</p>
+    </div>
+
+    <p class="nav-section-label">NAVIGATION</p>
+    <nav class="nav-links">
+      <button class="nav-item active" id="nav-dashboard" onclick="switchSection('dashboard')">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" id="nav-report" onclick="switchSection('report')">
+        <i data-lucide="file-plus"></i>
+        <span>Report Issue</span>
+      </button>
+      <button class="nav-item" id="nav-myreports" onclick="switchSection('myreports')">
+        <i data-lucide="clipboard-list"></i>
+        <span>My Reports</span>
+      </button>
+      <button class="nav-item" id="nav-admin" onclick="switchSection('admin')">
+        <i data-lucide="shield-check"></i>
+        <span>Admin Panel</span>
+      </button>
+      <button class="nav-item nav-logout" onclick="logout()">
+        <i data-lucide="log-out"></i>
+        <span>Logout</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">© 2014 – 2026 Road Report System</div>
+  </aside>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="topbar-left">
+        <span class="topbar-title" id="topbar-section-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-user-avatar">
+          <i data-lucide="user"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="content-area">
+
+      <!-- DASHBOARD -->
+      <section id="section-dashboard" class="content-section active">
+        <div class="section-header">
+          <h1 class="section-title">Dashboard</h1>
+          <p class="section-subtitle">Overview of all submitted road issue reports</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card stat-total">
+            <div class="stat-icon-wrap"><i data-lucide="file-check"></i></div>
+            <div>
+              <p class="stat-label">Total Reports</p>
+              <p class="stat-value" id="dash-total">0</p>
+            </div>
+          </div>
+          <div class="stat-card stat-pending">
+            <div class="stat-icon-wrap"><i data-lucide="clock"></i></div>
+            <div>
+              <p class="stat-label">Pending</p>
+              <p class="stat-value" id="dash-pending">0</p>
+            </div>
+          </div>
+          <div class="stat-card stat-resolved">
+            <div class="stat-icon-wrap"><i data-lucide="check-circle"></i></div>
+            <div>
+              <p class="stat-label">Resolved</p>
+              <p class="stat-value" id="dash-resolved">0</p>
+            </div>
+          </div>
+          <div class="stat-card stat-critical">
+            <div class="stat-icon-wrap"><i data-lucide="alert-triangle"></i></div>
+            <div>
+              <p class="stat-label">Critical</p>
+              <p class="stat-value" id="dash-critical">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h2 class="section-title" style="font-size:1rem">Recent Reports</h2>
+        </div>
+        <div class="reports-list" id="dashboard-list">
+          <div class="empty-state">
+            <i data-lucide="inbox"></i>
+            <p>No reports yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORT ISSUE -->
+      <section id="section-report" class="content-section">
+        <div class="section-header">
+          <h1 class="section-title">Report a Road Issue</h1>
+          <p class="section-subtitle">Fill in the details below to submit a new road issue report</p>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-header">
+            <i data-lucide="file-plus"></i>
+            <h3>Issue Details</h3>
+          </div>
+          <div class="form-body">
+            <div class="form-group">
+              <label for="input-location">Location / Street Name</label>
+              <div class="input-wrap">
+                <i data-lucide="map-pin" class="input-icon"></i>
+                <input id="input-location" type="text" placeholder="e.g. Main Street near City Hall" class="form-input with-icon">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input-description">Issue Description</label>
+              <textarea id="input-description" placeholder="Describe the road damage or issue..." class="form-input form-textarea"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="input-severity">Severity Level</label>
+                <div class="input-wrap">
+                  <i data-lucide="alert-circle" class="input-icon"></i>
+                  <select id="input-severity" class="form-select with-icon">
+                    <option value="low">Low – Minor damage</option>
+                    <option value="medium">Medium – Noticeable</option>
+                    <option value="high">High – Dangerous</option>
+                    <option value="critical">Critical – Road hazard</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input-reporter">Your Name</label>
+                <div class="input-wrap">
+                  <i data-lucide="user" class="input-icon"></i>
+                  <input id="input-reporter" type="text" placeholder="Your name or ID" class="form-input with-icon">
+                </div>
+              </div>
+            </div>
+            <button class="btn-submit" onclick="submitReport()">
+              <i data-lucide="send"></i>
+              <span>Submit Report</span>
+            </button>
+            <div id="success-message" class="success-alert hidden">
+              <i data-lucide="check-circle"></i>
+              <div>
+                <p class="success-title">Report submitted successfully!</p>
+                <p class="success-sub">Your report has been recorded and will be reviewed shortly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MY REPORTS -->
+      <section id="section-myreports" class="content-section">
+        <div class="section-header">
+          <h1 class="section-title">My Reports</h1>
+          <p class="section-subtitle">Track the status of your submitted reports</p>
+        </div>
+        <div class="reports-list" id="myreports-list">
+          <div class="empty-state">
+            <i data-lucide="inbox"></i>
+            <p>No reports found.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADMIN PANEL -->
+      <section id="section-admin" class="content-section">
+        <div class="section-header">
+          <h1 class="section-title">Admin Panel</h1>
+          <p class="section-subtitle">Manage and update all road issue reports</p>
+        </div>
+        <div class="reports-list" id="admin"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+console.log("system loaded");
+
+let USER = JSON.parse(localStorage.getItem("user")) || null;
+
+/* ================= HELPERS ================= */
+function severityColor(s) {
+  return { critical: '#ff6b6b', high: '#ffa94d', medium: '#ffd43b', low: '#74c0fc' }[s] || '#74c0fc';
+}
+
+function buildReportCard(r, adminMode = false) {
+  const statusPill = `<span class="pill pill-${r.status}">${(r.status || 'new').replace('_',' ').toUpperCase()}</span>`;
+  const sevPill    = `<span class="pill pill-${r.severity}">${(r.severity || 'low').toUpperCase()}</span>`;
+  const dot        = `<div class="report-severity-dot" style="background:${severityColor(r.severity)}"></div>`;
+
+  const adminActions = adminMode ? `
+    <div class="report-actions">
+      <button class="btn-sm btn-approve" onclick="updateStatus(${r.id},'approved')">Approve</button>
+      <button class="btn-sm btn-reject"  onclick="updateStatus(${r.id},'rejected')">Reject</button>
+      <button class="btn-sm btn-delete"  onclick="deleteReportAPI(${r.id})">Delete</button>
+    </div>` : '';
+
+  return `
+    <div class="report-card">
+      ${dot}
+      <div class="report-info">
+        <div class="report-location">${r.location || '—'}</div>
+        <div class="report-desc">${r.description || ''}</div>
+      </div>
+      <div class="report-meta">
+        ${sevPill}
+        ${statusPill}
+      </div>
+      ${adminActions}
+    </div>`;
+}
+
+/* ================= LOGIN UI ================= */
+function showLogin() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('tab-login-btn').classList.add('active');
+  document.getElementById('tab-register-btn').classList.remove('active');
+}
+
+function showRegister() {
+  document.getElementById('registerForm').classList.remove('hidden');
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('tab-register-btn').classList.add('active');
+  document.getElementById('tab-login-btn').classList.remove('active');
+}
+
+/* ================= LOGIN ================= */
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await loginAPI(email, password);
+
+  if (res.token) {
+    localStorage.setItem("user", JSON.stringify(res.user));
+    USER = res.user;
+    USER.role = res.role;
+
+    document.getElementById("loginModal").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+
+    // Show user info in sidebar
+    if (USER.name) document.getElementById('user-display-name').textContent = USER.name;
+    if (USER.role) document.getElementById('user-display-role').textContent = USER.role.charAt(0).toUpperCase() + USER.role.slice(1);
+
+    switchSection("dashboard");
+    loadAdminReports();
+    loadMyReports();
+  }
+  lucide.createIcons();
+}
+
+/* ================= LOGOUT ================= */
+function logout() {
+  localStorage.clear();
+  location.reload();
+}
+
+/* ================= NAVIGATION ================= */
+const sectionTitles = {
+  dashboard: 'Dashboard',
+  report: 'Report Issue',
+  myreports: 'My Reports',
+  admin: 'Admin Panel'
+};
+
+function switchSection(name) {
+  document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+
+  document.getElementById("section-" + name).classList.add("active");
+  const navEl = document.getElementById("nav-" + name);
+  if (navEl) navEl.classList.add("active");
+
+  const titleEl = document.getElementById("topbar-section-title");
+  if (titleEl) titleEl.textContent = sectionTitles[name] || name;
+
+  if (name === "admin") loadAdminReports();
+  if (name === "myreports") loadMyReports();
+  if (name === "dashboard") renderDashboard();
+
+  lucide.createIcons();
+}
+
+/* ================= SUBMIT REPORT ================= */
+async function submitReport() {
+  const data = {
+    location: document.getElementById("input-location").value,
+    description: document.getElementById("input-description").value,
+    severity: document.getElementById("input-severity").value,
+    reported_by: document.getElementById("input-reporter").value,
+    status: "new"
+  };
+
+  await createReport(data);
+
+  document.getElementById("input-location").value = '';
+  document.getElementById("input-description").value = '';
+  document.getElementById("input-reporter").value = '';
+  document.getElementById("input-severity").value = 'low';
+
+  const msg = document.getElementById('success-message');
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 4000);
+  lucide.createIcons();
+
+  loadMyReports();
+}
+
+/* ================= ADMIN ================= */
+async function loadAdminReports() {
+  const el = document.getElementById("admin");
+
+  if (!USER || USER.role !== "admin") {
+    el.innerHTML = `
+      <div class="access-denied">
+        <i data-lucide="shield-off"></i>
+        <h3>Access Denied</h3>
+        <p>You don't have permission to view this section.</p>
+      </div>`;
+    lucide.createIcons();
+    return;
+  }
+
+  const reports = await getAllReports();
+
+  if (!reports || reports.length === 0) {
+    el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No reports found.</p></div>`;
+    lucide.createIcons();
+    return;
+  }
+
+  el.innerHTML = reports.map(r => buildReportCard(r, true)).join('');
+  lucide.createIcons();
+}
+
+/* ================= UPDATE ================= */
+async function updateStatus(id, status) {
+  await updateReport(id, status);
+  loadAdminReports();
+}
+
+/* ================= DELETE ================= */
+async function deleteReportAPI(id) {
+  if (!confirm('Delete this report?')) return;
+  await deleteReport(id);
+  loadAdminReports();
+}
+
+/* ================= MY REPORTS ================= */
+async function loadMyReports() {
+  const el = document.getElementById("myreports-list");
+  const reports = await getMyReports();
+
+  if (!reports || reports.length === 0) {
+    el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No reports found.</p></div>`;
+    lucide.createIcons();
+    return;
+  }
+
+  el.innerHTML = reports.map(r => buildReportCard(r, false)).join('');
+  lucide.createIcons();
+}
+
+/* ================= DASHBOARD ================= */
+async function renderDashboard() {
+  const reports = await getAllReports();
+
+  document.getElementById("dash-total").innerText = reports.length;
+  document.getElementById("dash-pending").innerText = reports.filter(r => r.status === "new").length;
+  document.getElementById("dash-resolved").innerText = reports.filter(r => r.status === "resolved").length;
+  document.getElementById("dash-critical").innerText = reports.filter(r => r.severity === "critical").length;
+
+  const listEl = document.getElementById("dashboard-list");
+  const recent = reports.slice(0, 8);
+  if (recent.length === 0) {
+    listEl.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No reports yet.</p></div>`;
+  } else {
+    listEl.innerHTML = recent.map(r => buildReportCard(r, false)).join('');
+  }
+  lucide.createIcons();
+}
+
+/* ================= INIT ================= */
+if (USER) {
+  document.getElementById("loginModal").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  if (USER.name) document.getElementById('user-display-name').textContent = USER.name;
+  if (USER.role) document.getElementById('user-display-role').textContent = USER.role.charAt(0).toUpperCase() + USER.role.slice(1);
+  switchSection("dashboard");
+  loadAdminReports();
+  loadMyReports();
+}
+
+lucide.createIcons();
+</script>
+
+</body>
+</html>
