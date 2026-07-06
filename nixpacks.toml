@@ -2,7 +2,12 @@
 nixPkgs = ['php82', 'php82Packages.composer', 'nodejs_20']
 
 [phases.install]
-cmds = ['composer install --no-interaction --prefer-dist --no-dev', 'npm ci', 'npm run build']
+cmds = [
+	"php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+	'composer install --no-interaction --prefer-dist --no-dev',
+	'npm ci',
+	'npm run build'
+]
 
 [phases.build]
 cmds = []
