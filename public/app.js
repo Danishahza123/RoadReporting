@@ -103,8 +103,8 @@ function myReportCard(r) {
         <div class="review-proof">
           <span>Photo Proof</span>
           ${r.proof_photo_url
-            ? `<a href="${escapeHtml(r.proof_photo_url)}" target="_blank" rel="noopener"><img src="${escapeHtml(r.proof_photo_url)}" alt="Report proof photo"></a>`
-            : `<p>No proof photo attached</p>`}
+      ? `<a href="${escapeHtml(r.proof_photo_url)}" target="_blank" rel="noopener"><img src="${escapeHtml(r.proof_photo_url)}" alt="Report proof photo"></a>`
+      : `<p>No proof photo attached</p>`}
         </div>
       </div>
       <div class="report-edit hidden" id="report-edit-${id}">
@@ -198,8 +198,8 @@ function adminReportCard(r) {
         <div class="review-proof">
           <span>Photo Proof</span>
           ${r.proof_photo_url
-            ? `<a href="${escapeHtml(r.proof_photo_url)}" target="_blank" rel="noopener"><img src="${escapeHtml(r.proof_photo_url)}" alt="Report proof photo"></a>`
-            : `<p>No proof photo attached</p>`}
+      ? `<a href="${escapeHtml(r.proof_photo_url)}" target="_blank" rel="noopener"><img src="${escapeHtml(r.proof_photo_url)}" alt="Report proof photo"></a>`
+      : `<p>No proof photo attached</p>`}
         </div>
       </div>
       <div class="report-edit hidden" id="admin-report-edit-${id}">
