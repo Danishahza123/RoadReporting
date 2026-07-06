@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{ asset('index.css') }}?v={{ filemtime(public_path('index.css')) }}">
 
 <!-- ================= LOGIN ================= -->
-<div id="loginModal" class="login-modal">
+<div id="loginModal" class="login-modal" style="background-image: url('{{ asset('login-bg.png') }}'); background-size: cover; background-position: center;">
   <div class="login-box">
     <div class="login-grid"></div>
 

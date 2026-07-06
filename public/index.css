@@ -41,10 +41,20 @@ input,select,textarea{font-family:inherit}
 /* ===================== LOGIN MODAL ===================== */
 .login-modal{
   position:fixed;inset:0;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(2px);
   display:flex;justify-content:center;align-items:center;
   z-index:1000;
+}
+.login-modal::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(3,5,16,0.72);
+  z-index:0;
+}
+.login-modal > *{
+  position:relative;
+  z-index:1;
 }
 .login-box{
   background:var(--card-bg);
@@ -412,11 +422,9 @@ body{
 }
 
 .login-modal{
-  background:
-    linear-gradient(rgba(53,215,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(53,215,255,0.035) 1px, transparent 1px),
-    rgba(3,5,10,0.94);
-  background-size:36px 36px;
+  /* bg-image set via inline style in blade; pseudo-element provides dim overlay */
+  background-size:cover;
+  background-position:center;
 }
 
 .login-box{
