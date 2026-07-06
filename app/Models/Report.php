@@ -35,4 +35,5 @@ class Report extends Model
             ? asset('storage/'.$this->proof_photo_path)
             : null;
     }
+
 }

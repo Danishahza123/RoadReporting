@@ -84,6 +84,7 @@
 
 <!-- ================= APP ================= -->
 <div id="app" class="app-layout hidden">
+  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -140,6 +141,9 @@
     <!-- Top Bar -->
     <header class="top-bar">
       <div class="topbar-left">
+        <button class="mobile-menu-btn" type="button" onclick="toggleSidebar()" aria-label="Open navigation">
+          <i data-lucide="menu"></i>
+        </button>
         <span class="status-chip"><span></span> Live System</span>
         <span class="topbar-title" id="topbar-section-title">Dashboard</span>
       </div>

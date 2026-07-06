@@ -270,6 +270,22 @@ function refreshIcons() {
   if (window.lucide) lucide.createIcons();
 }
 
+function toggleSidebar(forceOpen = null) {
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebarBackdrop");
+  if (!sidebar) return;
+
+  const shouldOpen = forceOpen === null ? !sidebar.classList.contains("open") : forceOpen;
+  sidebar.classList.toggle("open", shouldOpen);
+  if (backdrop) backdrop.classList.toggle("open", shouldOpen);
+}
+window.toggleSidebar = toggleSidebar;
+
+function closeSidebar() {
+  toggleSidebar(false);
+}
+window.closeSidebar = closeSidebar;
+
 function isAdmin() {
   return window.USER?.role === "admin";
 }
@@ -310,7 +326,7 @@ function userCard(user) {
             <input id="user-name-${id}" class="form-input" value="${escapeHtml(user.name || "")}">
           </div>
           <div class="form-group">
-            <label for="user-email-${id}">Email Address</label>
+          <label for="user-email-${id}">Email Address</label>
             <input id="user-email-${id}" type="email" class="form-input" value="${escapeHtml(user.email || "")}">
           </div>
         </div>
@@ -547,6 +563,7 @@ window.switchSection = function (name) {
   if (name === "profile") loadProfileForm();
   if (name === "users") loadUsers();
   if (name === "dashboard") renderDashboard();
+  closeSidebar();
 };
 
 /* ================= ADMIN ================= */
@@ -984,3 +1001,11 @@ function showRegister() {
   document.getElementById("registerForm").classList.remove("hidden");
 }
 window.showRegister = showRegister;
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeSidebar();
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 900) closeSidebar();
+});
