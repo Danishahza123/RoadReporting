@@ -1,1 +1,1 @@
-web: mkdir -p /app/database && touch /app/database/database.sqlite && php artisan storage:link && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT
+web: cp .env.example .env || true && php artisan key:generate --force && mkdir -p /app/database && touch /app/database/database.sqlite && php artisan storage:link && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT
